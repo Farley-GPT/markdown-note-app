@@ -1,0 +1,7 @@
+// test.js
+function testLoadNotes() {
+    // Mock localStorage and test loadNotes functionality
+    console.assert(loadNotes() !== undefined, 'loadNotes should be defined');
+}
+
+testLoadNotes();

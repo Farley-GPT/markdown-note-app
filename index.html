@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Notes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="app">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="text-xl font-bold">Markdown Notes</h1>
+                <button id="newNoteBtn" class="new-note-btn">
+                    <i class="fas fa-plus"></i> New Note
+                </button>
+            </div>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search notes...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            <div id="notesList" class="notes-list">
+                <!-- Notes will be dynamically added here -->
+            </div>
+            <div class="markdown-help-container">
+                <button id="toggleCheatSheet" class="toggle-cheatsheet">
+                    <i class="fas fa-question-circle"></i> Markdown Help
+                </button>
+                <div id="markdownCheatSheet" class="markdown-cheatsheet hidden">
+                    <h3>Markdown Cheat Sheet</h3>
+                    
+                    <div class="cheatsheet-section">
+                        <h4>Headers</h4>
+                        <div class="cheatsheet-item">
+                            <code># Heading 1</code>
+                            <span>→</span>
+                            <span class="example">Heading 1</span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>## Heading 2</code>
+                            <span>→</span>
+                            <span class="example">Heading 2</span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>###### Heading 6</code>
+                            <span>→</span>
+                            <span class="example">Heading 6</span>
+                        </div>
+                    </div>
+
+                    <div class="cheatsheet-section">
+                        <h4>Emphasis</h4>
+                        <div class="cheatsheet-item">
+                            <code>**bold**</code>
+                            <span>→</span>
+                            <span class="example"><strong>bold</strong></span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>*italic*</code>
+                            <span>→</span>
+                            <span class="example"><em>italic</em></span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>~~strikethrough~~</code>
+                            <span>→</span>
+                            <span class="example"><del>strikethrough</del></span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>***bold italic***</code>
+                            <span>→</span>
+                            <span class="example"><strong><em>bold italic</em></strong></span>
+                        </div>
+                    </div>
+
+                    <div class="cheatsheet-section">
+                        <h4>Lists</h4>
+                        <div class="cheatsheet-item">
+                            <code>* unordered list<br>* item 2<br>&nbsp;&nbsp;* sub-item</code>
+                            <span>→</span>
+                            <span class="example">• unordered list<br>• item 2<br>&nbsp;&nbsp;◦ sub-item</span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>1. ordered list<br>2. item 2<br>&nbsp;&nbsp;1. sub-item</code>
+                            <span>→</span>
+                            <span class="example">1. ordered list<br>2. item 2<br>&nbsp;&nbsp;1. sub-item</span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>- [ ] task list<br>- [x] completed</code>
+                            <span>→</span>
+                            <span class="example">☐ task list<br>☑ completed</span>
+                        </div>
+                    </div>
+
+                    <div class="cheatsheet-section">
+                        <h4>Links & Images</h4>
+                        <div class="cheatsheet-item">
+                            <code>[link text](url)</code>
+                            <span>→</span>
+                            <span class="example"><a href="#">link text</a></span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>![alt text](image-url)</code>
+                            <span>→</span>
+                            <span class="example">Displays image</span>
+                        </div>
+                    </div>
+
+                    <div class="cheatsheet-section">
+                        <h4>Code</h4>
+                        <div class="cheatsheet-item">
+                            <code>`inline code`</code>
+                            <span>→</span>
+                            <span class="example"><code>inline code</code></span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>```<br>code block<br>```</code>
+                            <span>→</span>
+                            <span class="example">code block with background</span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>```javascript<br>// code with syntax highlighting<br>```</code>
+                            <span>→</span>
+                            <span class="example">highlighted code</span>
+                        </div>
+                    </div>
+
+                    <div class="cheatsheet-section">
+                        <h4>Quotes & Dividers</h4>
+                        <div class="cheatsheet-item">
+                            <code>> blockquote<br>> multiple lines</code>
+                            <span>→</span>
+                            <span class="example">indented quote block</span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>---</code>
+                            <span>→</span>
+                            <span class="example">horizontal rule</span>
+                        </div>
+                    </div>
+
+                    <div class="cheatsheet-section">
+                        <h4>Tables</h4>
+                        <div class="cheatsheet-item">
+                            <code>| Header | Header |<br>|--------|--------| <br>| Cell | Cell |</code>
+                            <span>→</span>
+                            <span class="example">Basic table</span>
+                        </div>
+                    </div>
+
+                    <div class="cheatsheet-section">
+                        <h4>Advanced</h4>
+                        <div class="cheatsheet-item">
+                            <code>[^1]: Footnote</code>
+                            <span>→</span>
+                            <span class="example">Footnote reference</span>
+                        </div>
+                        <div class="cheatsheet-item">
+                            <code>==highlighted==</code>
+                            <span>→</span>
+                            <span class="example"><mark>highlighted</mark></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <main class="content">
+            <div class="editor-container">
+                <textarea id="editor" placeholder="Write your note in Markdown..."></textarea>
+                <div id="preview" class="preview"></div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
